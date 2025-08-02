@@ -29,7 +29,7 @@ const Footer = () => {
     { name: "About Us", href: "#about" },
     { name: "Programs", href: "#programs" },
     { name: "Form", href: "#form" },
-    { name: "Contact", href: "#footer" }
+    { name: "Check out DevLift", href: "https://devlift.vercel.app", target: "_blank" }
   ];
 
   return (
@@ -51,7 +51,7 @@ const Footer = () => {
               <span className="text-2xl font-bold">CODAX Community</span>
             </div>
             <p className="text-gray-300 mb-6 leading-relaxed max-w-md">
-              Empowering students to discover their niche and thrive in respective industries.
+              Empowering students to discover their niche and thrive in it.
             </p>
           </motion.div>
 
@@ -67,7 +67,8 @@ const Footer = () => {
               {quickLinks.map((link, index) => (
                 <li key={index}>
                   <motion.a
-                    href={link.href}
+                    href={link.href} 
+                    target={link.target}
                     className="text-gray-300 hover:text-white transition-colors duration-200"
                     whileHover={{ x: 4 }}
                     onClick={(e) => {

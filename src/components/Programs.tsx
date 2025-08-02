@@ -9,7 +9,9 @@ const Programs = () => {
   const [whyInterested, setWhyInterested] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [state, handleSubmit] = useForm(import.meta.env.VITE_FORMSPREE_FORM_ID);
+  // Check if Formspree is configured
+  const formspreeFormId = import.meta.env.VITE_FORMSPREE_FORM_ID;
+  const [state, handleSubmit] = useForm(formspreeFormId || "temp-form-id");
 
   const programs = [
     {
@@ -93,6 +95,16 @@ const Programs = () => {
   };
 
   const sendEmailToUser = async (userEmail: string, userName: string, selectedPrograms: string[], whyInterested: string) => {
+    // Check if EmailJS is configured
+    const emailjsServiceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const emailjsTemplateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const emailjsPublicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+    
+    if (!emailjsServiceId || !emailjsTemplateId || !emailjsPublicKey) {
+      console.warn('EmailJS not configured. Skipping email send.');
+      return;
+    }
+    
     try {
       console.log('Attempting to send email to:', userEmail);
       
@@ -108,10 +120,10 @@ const Programs = () => {
       console.log('Template params:', templateParams);
 
       const result = await emailjs.send(
-        import.meta.env.VITE_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        emailjsServiceId,
+        emailjsTemplateId,
         templateParams,
-        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+        emailjsPublicKey
       );
 
       console.log('Email sent successfully to user:', result);
@@ -230,6 +242,9 @@ const Programs = () => {
                     Thank you for your interest!
                   </div>
                   <p className="mt-2 text-green-700">Your feedback helps us build the right program for you.</p>
+                  {!formspreeFormId && (
+                    <p className="mt-2 text-yellow-700 text-sm">Note: Form submission is in demo mode. Configure Formspree for production use.</p>
+                  )}
                 </div>
               </motion.div>
             ) : (

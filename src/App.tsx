@@ -5,8 +5,10 @@ import Programs from './components/Programs';
 import Footer from './components/Footer';
 
 function App() {
+  console.log('App component rendering');
+  
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gray-100">
       <Hero />
       <About />
       <Programs />

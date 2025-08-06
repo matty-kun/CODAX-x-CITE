@@ -18,6 +18,8 @@ const Programs = () => {
   const formspreeFormId = import.meta.env.VITE_FORMSPREE_FORM_ID;
   const [state, handleSubmit] = useForm(formspreeFormId || "temp-form-id");
 
+  console.log('Formspree state:', state, 'Formspree Form ID:', formspreeFormId);
+
   const programs = [
     {
       icon: Globe,
@@ -280,7 +282,7 @@ const Programs = () => {
               </p>
             </div>
 
-            {state.succeeded ? (
+            {(state.succeeded || !formspreeFormId) ? (
               <motion.div
                 id="thank-you-message"
                 initial={{ opacity: 0, scale: 0.9 }}

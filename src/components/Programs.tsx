@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Globe, Shield, Brain, Gamepad2, Smartphone, Palette, Cloud, BarChart3, Coins, Cpu, Send } from 'lucide-react';
+import { Globe, Shield, Brain, Gamepad2, Smartphone, Palette, Cloud, BarChart3, Coins, Cpu, Send, Rocket } from 'lucide-react';
 import { useForm, ValidationError } from '@formspree/react';
 import emailjs from '@emailjs/browser';
 
@@ -9,6 +9,11 @@ const Programs = () => {
   const [whyInterested, setWhyInterested] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [showStartupQuestions, setShowStartupQuestions] = useState(false);
+  const [startupField, setStartupField] = useState('');
+  const [startupProblem, setStartupProblem] = useState('');
+  const [startupIdeas, setStartupIdeas] = useState('');
+  const [startupBarriers, setStartupBarriers] = useState('');
   // Check if Formspree is configured
   const formspreeFormId = import.meta.env.VITE_FORMSPREE_FORM_ID;
   const [state, handleSubmit] = useForm(formspreeFormId || "temp-form-id");
@@ -83,18 +88,33 @@ const Programs = () => {
       description: "Build intelligent systems, IoT devices, and explore the intersection of hardware and software.",
       color: "from-violet-500 to-purple-400",
       skills: ["Arduino", "Raspberry Pi", "C++", "Sensors"]
+    },
+    {
+      icon: Rocket,
+      title: "Technopreneurship",
+      description: "Build and launch your own startup with guidance on business strategy, funding, and growth.",
+      color: "from-indigo-500 to-purple-500",
+      skills: ["Business Strategy", "Funding", "Growth Hacking", "MVP Development"]
     }
   ];
 
   const handleProgramToggle = (programTitle: string) => {
+    const isCurrentlySelected = selectedPrograms.includes(programTitle);
+    const willBeSelected = !isCurrentlySelected;
+    
     setSelectedPrograms(prev => 
-      prev.includes(programTitle)
+      isCurrentlySelected
         ? prev.filter(p => p !== programTitle)
         : [...prev, programTitle]
     );
+    
+    // Show/hide startup questions based on Technopreneurship selection
+    if (programTitle === "Technopreneurship") {
+      setShowStartupQuestions(willBeSelected);
+    }
   };
 
-  const sendEmailToUser = async (userEmail: string, userName: string, selectedPrograms: string[], whyInterested: string) => {
+  const sendEmailToUser = async (userEmail: string, userName: string, selectedPrograms: string[], whyInterested: string, startupData?: any) => {
     // Check if EmailJS is configured
     const emailjsServiceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
     const emailjsTemplateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
@@ -113,6 +133,10 @@ const Programs = () => {
         name: userName,
         selected_programs: selectedPrograms.join(', '),
         why_interested: whyInterested,
+        startup_field: startupData?.field || '',
+        startup_problem: startupData?.problem || '',
+        startup_ideas: startupData?.ideas || '',
+        startup_barriers: startupData?.barriers || '',
         to_email: userEmail,
         to_name: userName
       };
@@ -140,14 +164,25 @@ const Programs = () => {
       name: name,
       email: email,
       selectedPrograms: selectedPrograms.join(', '),
-      whyInterested: whyInterested
+      whyInterested: whyInterested,
+      startupField: startupField,
+      startupProblem: startupProblem,
+      startupIdeas: startupIdeas,
+      startupBarriers: startupBarriers
     };
     
     // Submit to Formspree
     await handleSubmit(formData);
     
     // Send email to user
-    await sendEmailToUser(email, name, selectedPrograms, whyInterested);
+    const startupData = showStartupQuestions ? {
+      field: startupField,
+      problem: startupProblem,
+      ideas: startupIdeas,
+      barriers: startupBarriers
+    } : undefined;
+    
+    await sendEmailToUser(email, name, selectedPrograms, whyInterested, startupData);
   };
 
   return (
@@ -360,6 +395,87 @@ const Programs = () => {
                     className="text-red-500 text-sm mt-1"
                   />
                 </div>
+
+                {/* Startup Questions */}
+                {showStartupQuestions && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-2xl p-6 border-2 border-purple-200"
+                  >
+                    <div className="text-center mb-6">
+                      <h4 className="text-2xl font-bold text-purple-900 mb-2">Startup Questions</h4>
+                      <p className="text-purple-700">Help us understand your startup vision better!</p>
+                    </div>
+                    
+                    <div className="space-y-6">
+                      {/* Startup Field */}
+                      <div>
+                        <label htmlFor="startup-field" className="block text-lg font-semibold text-gray-900 mb-3">
+                          What field is your startup in?
+                        </label>
+                        <input
+                          type="text"
+                          id="startup-field"
+                          name="startupField"
+                          className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors duration-200"
+                          placeholder="e.g., Fintech, EdTech, HealthTech, E-commerce, etc."
+                          value={startupField}
+                          onChange={(e) => setStartupField(e.target.value)}
+                        />
+                      </div>
+
+                      {/* Problem to Solve */}
+                      <div>
+                        <label htmlFor="startup-problem" className="block text-lg font-semibold text-gray-900 mb-3">
+                          What problem do you want to solve?
+                        </label>
+                        <textarea
+                          id="startup-problem"
+                          name="startupProblem"
+                          rows={3}
+                          className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors duration-200 resize-none"
+                          placeholder="Describe the specific problem or pain point your startup aims to address..."
+                          value={startupProblem}
+                          onChange={(e) => setStartupProblem(e.target.value)}
+                        />
+                      </div>
+
+                      {/* Ideas for Solving */}
+                      <div>
+                        <label htmlFor="startup-ideas" className="block text-lg font-semibold text-gray-900 mb-3">
+                          What are your ideas in solving that problem?
+                        </label>
+                        <textarea
+                          id="startup-ideas"
+                          name="startupIdeas"
+                          rows={4}
+                          className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors duration-200 resize-none"
+                          placeholder="Share your approach, solution, or innovative ideas for solving this problem..."
+                          value={startupIdeas}
+                          onChange={(e) => setStartupIdeas(e.target.value)}
+                        />
+                      </div>
+
+                      {/* Barriers */}
+                      <div>
+                        <label htmlFor="startup-barriers" className="block text-lg font-semibold text-gray-900 mb-3">
+                          What's stopping you from pursuing that startup?
+                        </label>
+                        <textarea
+                          id="startup-barriers"
+                          name="startupBarriers"
+                          rows={3}
+                          className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors duration-200 resize-none"
+                          placeholder="What challenges, fears, or obstacles are preventing you from moving forward?"
+                          value={startupBarriers}
+                          onChange={(e) => setStartupBarriers(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
 
                 {/* Submit Button */}
                 <div className="text-center">

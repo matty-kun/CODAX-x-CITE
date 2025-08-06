@@ -282,7 +282,7 @@ const Programs = () => {
               </p>
             </div>
 
-            {(state.succeeded || !formspreeFormId) ? (
+            {(state.succeeded) ? (
               <motion.div
                 id="thank-you-message"
                 initial={{ opacity: 0, scale: 0.9 }}

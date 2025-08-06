@@ -183,6 +183,25 @@ const Programs = () => {
     } : undefined;
     
     await sendEmailToUser(email, name, selectedPrograms, whyInterested, startupData);
+
+    // Reset form fields after submission
+    setName('');
+    setEmail('');
+    setSelectedPrograms([]);
+    setWhyInterested('');
+    setStartupField('');
+    setStartupProblem('');
+    setStartupIdeas('');
+    setStartupBarriers('');
+    setShowStartupQuestions(false);
+
+    // Scroll to thank you message
+    setTimeout(() => {
+      const thankYou = document.getElementById('thank-you-message');
+      if (thankYou) {
+        thankYou.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 200);
   };
 
   return (
@@ -263,20 +282,21 @@ const Programs = () => {
 
             {state.succeeded ? (
               <motion.div
+                id="thank-you-message"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="text-center py-12"
+                className="text-center py-16"
               >
-                <div className="bg-green-100 text-green-800 p-6 rounded-2xl inline-block">
-                  <div className="flex items-center gap-3 text-xl font-semibold">
-                    <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
-                      <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="bg-gradient-to-br from-green-200 to-green-100 text-green-900 p-8 rounded-3xl inline-block shadow-xl border-2 border-green-400">
+                  <div className="flex items-center gap-3 text-2xl font-bold">
+                    <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
+                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
                     </div>
                     Thank you for your interest!
                   </div>
-                  <p className="mt-2 text-green-700">Your feedback helps us build the right program for you.</p>
+                  <p className="mt-4 text-green-800 text-lg">Your feedback helps us build the right program for you.</p>
                   {!formspreeFormId && (
                     <p className="mt-2 text-yellow-700 text-sm">Note: Form submission is in demo mode. Configure Formspree for production use.</p>
                   )}

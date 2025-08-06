@@ -53,7 +53,7 @@ const Hero = () => {
           transition={{ duration: 0.8 }}
           className="mb-8"
         >
-          <div className="flex items-center justify-center gap-4 mb-6">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 mb-6">
             <motion.div
               className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full text-white"
               whileHover={{ scale: 1.05 }}
@@ -62,7 +62,7 @@ const Hero = () => {
               <span className="font-medium">CODAX Community</span>
             </motion.div>
             <motion.div
-              className="flex items-center justify-center w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full text-white/80 font-semibold text-sm"
+              className="flex items-center justify-center w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full text-white/80 font-semibold text-xl my-2 sm:my-0"
               whileHover={{ scale: 1.1 }}
             >
               ×

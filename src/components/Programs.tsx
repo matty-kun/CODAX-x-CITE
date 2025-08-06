@@ -207,24 +207,24 @@ const Programs = () => {
   };
 
   return (
-    <section id="programs" className="py-20 bg-white">
-      <div className="container mx-auto px-6">
+    <section id="programs" className="py-12 sm:py-20 bg-white">
+      <div className="container mx-auto px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-10 sm:mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+          <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
             Our <span className="text-purple-600">Programs</span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-base xs:text-lg sm:text-xl text-gray-600 max-w-xs xs:max-w-md sm:max-w-3xl mx-auto leading-relaxed">
             Explore diverse tech domains and find your path.
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 mb-10 sm:mb-16">
           {programs.map((program, index) => (
             <motion.div
               key={index}
@@ -235,18 +235,16 @@ const Programs = () => {
               whileHover={{ y: -8 }}
               className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden group cursor-pointer"
             >
-              <div className={`bg-gradient-to-r ${program.color} p-6 text-white`}>
-                <program.icon className="w-10 h-10 mb-3" />
-                <h3 className="text-lg font-bold mb-2 leading-tight">{program.title}</h3>
+              <div className={`bg-gradient-to-r ${program.color} p-4 sm:p-6 text-white`}>
+                <program.icon className="w-8 h-8 sm:w-10 sm:h-10 mb-2 sm:mb-3" />
+                <h3 className="text-base sm:text-lg font-bold mb-1 sm:mb-2 leading-tight">{program.title}</h3>
               </div>
-              
-              <div className="p-6">
-                <p className="text-gray-600 mb-4 text-sm leading-relaxed">
+              <div className="p-4 sm:p-6">
+                <p className="text-gray-600 mb-2 sm:mb-4 text-xs sm:text-sm leading-relaxed">
                   {program.description}
                 </p>
-                
-                <div className="space-y-2">
-                  <h4 className="font-semibold text-gray-900 text-sm">Key Skills:</h4>
+                <div className="space-y-1 sm:space-y-2">
+                  <h4 className="font-semibold text-gray-900 text-xs sm:text-sm">Key Skills:</h4>
                   <div className="flex flex-wrap gap-1">
                     {program.skills.map((skill, skillIndex) => (
                       <span
@@ -258,7 +256,6 @@ const Programs = () => {
                     ))}
                   </div>
                 </div>
-              
               </div>
             </motion.div>
           ))}
@@ -270,14 +267,14 @@ const Programs = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-3xl p-8 md:p-12"
+          className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-3xl p-4 sm:p-8 md:p-12"
         >
-          <div id="form" className="max-w-4xl mx-auto">
-            <div className="text-center mb-10">
-              <h3 className="text-3xl font-bold text-gray-900 mb-4">
+          <div id="form" className="max-w-lg sm:max-w-4xl mx-auto">
+            <div className="text-center mb-6 sm:mb-10">
+              <h3 className="text-xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-4">
                 What program or tech niche are you most interested in?
               </h3>
-              <p className="text-xl text-gray-600">
+              <p className="text-base sm:text-xl text-gray-600">
                 Help us understand your interests so we can tailor our plan to your needs!
               </p>
             </div>
@@ -287,29 +284,29 @@ const Programs = () => {
                 id="thank-you-message"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="text-center py-16"
+                className="text-center py-10 sm:py-16"
               >
-                <div className="bg-gradient-to-br from-green-200 to-green-100 text-green-900 p-8 rounded-3xl inline-block shadow-xl border-2 border-green-400">
-                  <div className="flex items-center gap-3 text-2xl font-bold">
-                    <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
-                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="bg-gradient-to-br from-green-200 to-green-100 text-green-900 p-6 sm:p-8 rounded-3xl inline-block shadow-xl border-2 border-green-400">
+                  <div className="flex items-center gap-3 text-xl sm:text-2xl font-bold">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-green-500 rounded-full flex items-center justify-center">
+                      <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
                     </div>
                     Thank you for your interest!
                   </div>
-                  <p className="mt-4 text-green-800 text-lg">Your feedback helps us build the right program for you.</p>
+                  <p className="mt-2 sm:mt-4 text-green-800 text-base sm:text-lg">Your feedback helps us build the right program for you.</p>
                   {!formspreeFormId && (
-                    <p className="mt-2 text-yellow-700 text-sm">Note: Form submission is in demo mode. Configure Formspree for production use.</p>
+                    <p className="mt-2 text-yellow-700 text-xs sm:text-sm">Note: Form submission is in demo mode. Configure Formspree for production use.</p>
                   )}
                 </div>
               </motion.div>
             ) : (
-              <form onSubmit={handleFormSubmit} className="space-y-8">
+              <form onSubmit={handleFormSubmit} className="space-y-6 sm:space-y-8">
                 {/* Personal Information */}
-                <div className="grid md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                   <div>
-                    <label htmlFor="name" className="block text-lg font-semibold text-gray-900 mb-3">
+                    <label htmlFor="name" className="block text-base sm:text-lg font-semibold text-gray-900 mb-2 sm:mb-3">
                       Name (Required)
                     </label>
                     <input
@@ -317,7 +314,7 @@ const Programs = () => {
                       id="name"
                       name="name"
                       required
-                      className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors duration-200"
+                      className="w-full p-3 sm:p-4 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors duration-200"
                       placeholder="Your full name"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
@@ -326,11 +323,11 @@ const Programs = () => {
                       prefix="Name" 
                       field="name"
                       errors={state.errors}
-                      className="text-red-500 text-sm mt-1"
+                      className="text-red-500 text-xs sm:text-sm mt-1"
                     />
                   </div>
                   <div>
-                    <label htmlFor="email" className="block text-lg font-semibold text-gray-900 mb-3">
+                    <label htmlFor="email" className="block text-base sm:text-lg font-semibold text-gray-900 mb-2 sm:mb-3">
                       Email (Required)
                     </label>
                     <input
@@ -338,7 +335,7 @@ const Programs = () => {
                       id="email"
                       name="email"
                       required
-                      className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors duration-200"
+                      className="w-full p-3 sm:p-4 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors duration-200"
                       placeholder="your.email@example.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
@@ -347,21 +344,21 @@ const Programs = () => {
                       prefix="Email" 
                       field="email"
                       errors={state.errors}
-                      className="text-red-500 text-sm mt-1"
+                      className="text-red-500 text-xs sm:text-sm mt-1"
                     />
                   </div>
                 </div>
 
                 {/* Program Selection */}
                 <div>
-                  <label className="block text-lg font-semibold text-gray-900 mb-4">
+                  <label className="block text-base sm:text-lg font-semibold text-gray-900 mb-2 sm:mb-4">
                     Select the programs you're interested in:
                   </label>
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
                     {programs.map((program, index) => (
                       <motion.label
                         key={index}
-                        className={`flex items-center p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 ${
+                        className={`flex items-center p-3 sm:p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 ${
                           selectedPrograms.includes(program.title)
                             ? 'border-purple-500 bg-purple-50'
                             : 'border-gray-200 bg-white hover:border-purple-300'
@@ -375,7 +372,7 @@ const Programs = () => {
                           checked={selectedPrograms.includes(program.title)}
                           onChange={() => handleProgramToggle(program.title)}
                         />
-                        <div className={`w-5 h-5 rounded border-2 mr-3 flex items-center justify-center ${
+                        <div className={`w-5 h-5 rounded border-2 mr-2 sm:mr-3 flex items-center justify-center ${
                           selectedPrograms.includes(program.title)
                             ? 'border-purple-500 bg-purple-500'
                             : 'border-gray-300'
@@ -386,9 +383,9 @@ const Programs = () => {
                             </svg>
                           )}
                         </div>
-                        <div className="flex items-center gap-3">
-                          <program.icon className="w-5 h-5 text-gray-600" />
-                          <span className="font-medium text-gray-900 text-sm">{program.title}</span>
+                        <div className="flex items-center gap-2 sm:gap-3">
+                          <program.icon className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
+                          <span className="font-medium text-gray-900 text-xs sm:text-sm">{program.title}</span>
                         </div>
                       </motion.label>
                     ))}
@@ -397,15 +394,15 @@ const Programs = () => {
 
                 {/* Why Interested */}
                 <div>
-                  <label htmlFor="why-interested" className="block text-lg font-semibold text-gray-900 mb-4">
+                  <label htmlFor="why-interested" className="block text-base sm:text-lg font-semibold text-gray-900 mb-2 sm:mb-4">
                     Why are you interested in this niche? (Required)
                   </label>
                   <textarea
                     id="why-interested"
                     name="whyInterested"
                     required
-                    rows={4}
-                    className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors duration-200 resize-none"
+                    rows={3}
+                    className="w-full p-3 sm:p-4 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors duration-200 resize-none"
                     placeholder="Tell us what draws you to these areas, your goals, or what do you want to see in this program..."
                     value={whyInterested}
                     onChange={(e) => setWhyInterested(e.target.value)}
@@ -414,7 +411,7 @@ const Programs = () => {
                     prefix="Message" 
                     field="whyInterested"
                     errors={state.errors}
-                    className="text-red-500 text-sm mt-1"
+                    className="text-red-500 text-xs sm:text-sm mt-1"
                   />
                 </div>
 
@@ -424,72 +421,68 @@ const Programs = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
-                    className="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-2xl p-6 border-2 border-purple-200"
+                    className="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-2xl p-4 sm:p-6 border-2 border-purple-200"
                   >
-                    <div className="text-center mb-6">
-                      <h4 className="text-2xl font-bold text-purple-900 mb-2">Startup Questions</h4>
-                      <p className="text-purple-700">Help us understand your startup vision better!</p>
+                    <div className="text-center mb-4 sm:mb-6">
+                      <h4 className="text-lg sm:text-2xl font-bold text-purple-900 mb-1 sm:mb-2">Startup Questions</h4>
+                      <p className="text-purple-700 text-xs sm:text-base">Help us understand your startup vision better!</p>
                     </div>
-                    
-                    <div className="space-y-6">
+                    <div className="space-y-4 sm:space-y-6">
                       {/* Startup Field */}
                       <div>
-                        <label htmlFor="startup-field" className="block text-lg font-semibold text-gray-900 mb-3">
+                        <label htmlFor="startup-field" className="block text-base sm:text-lg font-semibold text-gray-900 mb-1 sm:mb-3">
                           What field is your startup in?
                         </label>
                         <input
                           type="text"
                           id="startup-field"
                           name="startupField"
-                          className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors duration-200"
+                          className="w-full p-3 sm:p-4 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors duration-200"
                           placeholder="e.g., Fintech, EdTech, HealthTech, E-commerce, etc."
                           value={startupField}
                           onChange={(e) => setStartupField(e.target.value)}
                         />
                       </div>
-
                       {/* Problem to Solve */}
                       <div>
-                        <label htmlFor="startup-problem" className="block text-lg font-semibold text-gray-900 mb-3">
+                        <label htmlFor="startup-problem" className="block text-base sm:text-lg font-semibold text-gray-900 mb-1 sm:mb-3">
                           What problem do you want to solve?
                         </label>
                         <textarea
                           id="startup-problem"
                           name="startupProblem"
-                          rows={3}
-                          className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors duration-200 resize-none"
+                          rows={2}
+                          className="w-full p-3 sm:p-4 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors duration-200 resize-none"
                           placeholder="Describe the specific problem or pain point your startup aims to address..."
                           value={startupProblem}
                           onChange={(e) => setStartupProblem(e.target.value)}
                         />
                       </div>
-
                       {/* Ideas for Solving */}
                       <div>
-                        <label htmlFor="startup-ideas" className="block text-lg font-semibold text-gray-900 mb-3">
+                        <label htmlFor="startup-ideas" className="block text-base sm:text-lg font-semibold text-gray-900 mb-1 sm:mb-3">
                           What are your ideas in solving that problem?
                         </label>
                         <textarea
                           id="startup-ideas"
                           name="startupIdeas"
-                          rows={4}
-                          className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors duration-200 resize-none"
+                          rows={3}
+                          className="w-full p-3 sm:p-4 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors duration-200 resize-none"
                           placeholder="Share your approach, solution, or innovative ideas for solving this problem..."
                           value={startupIdeas}
                           onChange={(e) => setStartupIdeas(e.target.value)}
                         />
                       </div>
-
                       {/* Barriers */}
                       <div>
-                        <label htmlFor="startup-barriers" className="block text-lg font-semibold text-gray-900 mb-3">
+                        <label htmlFor="startup-barriers" className="block text-base sm:text-lg font-semibold text-gray-900 mb-1 sm:mb-3">
                           What's stopping you from pursuing that startup?
                         </label>
                         <textarea
                           id="startup-barriers"
                           name="startupBarriers"
-                          rows={3}
-                          className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors duration-200 resize-none"
+                          rows={2}
+                          className="w-full p-3 sm:p-4 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors duration-200 resize-none"
                           placeholder="What challenges, fears, or obstacles are preventing you from moving forward?"
                           value={startupBarriers}
                           onChange={(e) => setStartupBarriers(e.target.value)}
@@ -503,7 +496,7 @@ const Programs = () => {
                 <div className="text-center">
                   <motion.button
                     type="submit"
-                    className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg flex items-center gap-3 mx-auto disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg shadow-lg flex items-center gap-3 mx-auto disabled:opacity-50 disabled:cursor-not-allowed"
                     whileHover={{ scale: selectedPrograms.length > 0 && name.trim() && email.trim() && whyInterested.trim() && !state.submitting ? 1.05 : 1 }}
                     whileTap={{ scale: selectedPrograms.length > 0 && name.trim() && email.trim() && whyInterested.trim() && !state.submitting ? 0.95 : 1 }}
                     disabled={selectedPrograms.length === 0 || !name.trim() || !email.trim() || !whyInterested.trim() || state.submitting}
@@ -512,7 +505,7 @@ const Programs = () => {
                     {state.submitting ? 'Submitting...' : 'Submit Interest'}
                   </motion.button>
                   {(selectedPrograms.length === 0 || !name.trim() || !email.trim()) && (
-                    <p className="text-gray-500 text-sm mt-2">
+                    <p className="text-gray-500 text-xs sm:text-sm mt-2">
                       {selectedPrograms.length === 0 
                         ? 'Please select at least one program to continue'
                         : !name.trim() || !email.trim() || !whyInterested.trim()
@@ -532,7 +525,7 @@ const Programs = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
           viewport={{ once: true }}
-          className="mt-16 text-center"
+          className="mt-10 sm:mt-16 text-center"
         >
         </motion.div>
       </div>

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Globe, Shield, Brain, Gamepad2, Smartphone, Palette, Cloud, BarChart3, Coins, Cpu, Send, Rocket } from 'lucide-react';
-import { useForm, ValidationError } from '@formspree/react';
-import emailjs from '@emailjs/browser';
+import { supabase } from '../supabaseClient';
 
 const Programs = () => {
   const [selectedPrograms, setSelectedPrograms] = useState<string[]>([]);
@@ -14,11 +13,9 @@ const Programs = () => {
   const [startupProblem, setStartupProblem] = useState('');
   const [startupIdeas, setStartupIdeas] = useState('');
   const [startupBarriers, setStartupBarriers] = useState('');
-  // Check if Formspree is configured
-  const formspreeFormId = import.meta.env.VITE_FORMSPREE_FORM_ID;
-  const [state, handleSubmit] = useForm(formspreeFormId || "temp-form-id");
-
-  console.log('Formspree state:', state, 'Formspree Form ID:', formspreeFormId);
+  const [submitting, setSubmitting] = useState(false);
+  const [succeeded, setSucceeded] = useState(false);
+  // ...existing code...
 
   const programs = [
     {
@@ -116,75 +113,33 @@ const Programs = () => {
     }
   };
 
-  const sendEmailToUser = async (userEmail: string, userName: string, selectedPrograms: string[], whyInterested: string, startupData?: any) => {
-    // Check if EmailJS is configured
-    const emailjsServiceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-    const emailjsTemplateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-    const emailjsPublicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-    
-    if (!emailjsServiceId || !emailjsTemplateId || !emailjsPublicKey) {
-      console.warn('EmailJS not configured. Skipping email send.');
-      return;
-    }
-    
-    try {
-      console.log('Attempting to send email to:', userEmail);
-      
-      const templateParams = {
-        email: userEmail,
-        name: userName,
-        selected_programs: selectedPrograms.join(', '),
-        why_interested: whyInterested,
-        startup_field: startupData?.field || '',
-        startup_problem: startupData?.problem || '',
-        startup_ideas: startupData?.ideas || '',
-        startup_barriers: startupData?.barriers || '',
-        to_email: userEmail,
-        to_name: userName
-      };
-
-      console.log('Template params:', templateParams);
-
-      const result = await emailjs.send(
-        emailjsServiceId,
-        emailjsTemplateId,
-        templateParams,
-        emailjsPublicKey
-      );
-
-      console.log('Email sent successfully to user:', result);
-    } catch (error) {
-      console.error('Error sending email to user:', error);
-    }
-  };
+  // Remove EmailJS logic
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Prepare the data for Formspree
-    const formData = {
-      name: name,
-      email: email,
-      selectedPrograms: selectedPrograms.join(', '),
-      whyInterested: whyInterested,
-      startupField: startupField,
-      startupProblem: startupProblem,
-      startupIdeas: startupIdeas,
-      startupBarriers: startupBarriers
-    };
-    
-    // Submit to Formspree
-    await handleSubmit(formData);
-    
-    // Send email to user
-    const startupData = showStartupQuestions ? {
-      field: startupField,
-      problem: startupProblem,
-      ideas: startupIdeas,
-      barriers: startupBarriers
-    } : undefined;
-    
-    await sendEmailToUser(email, name, selectedPrograms, whyInterested, startupData);
+    setSubmitting(true);
+    setSucceeded(false);
+    // Insert interest data into Supabase
+    const { error } = await supabase
+      .from('program_interests')
+      .insert([
+        {
+          name,
+          email,
+          selected_programs: selectedPrograms.join(', '),
+          why_interested: whyInterested,
+          startup_field: startupField,
+          startup_problem: startupProblem,
+          startup_ideas: startupIdeas,
+          startup_barriers: startupBarriers,
+        },
+      ]);
+
+    setSubmitting(false);
+    if (error) {
+      console.error('Error submitting interest:', error);
+      return;
+    }
 
     // Reset form fields after submission
     setName('');
@@ -196,7 +151,7 @@ const Programs = () => {
     setStartupIdeas('');
     setStartupBarriers('');
     setShowStartupQuestions(false);
-
+    setSucceeded(true);
     // Scroll to thank you message
     setTimeout(() => {
       const thankYou = document.getElementById('thank-you-message');
@@ -279,7 +234,7 @@ const Programs = () => {
               </p>
             </div>
 
-            {(state.succeeded) ? (
+            {succeeded ? (
               <motion.div
                 id="thank-you-message"
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -296,9 +251,6 @@ const Programs = () => {
                     Thank you for your interest!
                   </div>
                   <p className="mt-2 sm:mt-4 text-green-800 text-base sm:text-lg">Your feedback helps us build the right program for you.</p>
-                  {!formspreeFormId && (
-                    <p className="mt-2 text-yellow-700 text-xs sm:text-sm">Note: Form submission is in demo mode. Configure Formspree for production use.</p>
-                  )}
                 </div>
               </motion.div>
             ) : (
@@ -319,12 +271,6 @@ const Programs = () => {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                     />
-                    <ValidationError 
-                      prefix="Name" 
-                      field="name"
-                      errors={state.errors}
-                      className="text-red-500 text-xs sm:text-sm mt-1"
-                    />
                   </div>
                   <div>
                     <label htmlFor="email" className="block text-base sm:text-lg font-semibold text-gray-900 mb-2 sm:mb-3">
@@ -339,12 +285,6 @@ const Programs = () => {
                       placeholder="your.email@example.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                    />
-                    <ValidationError 
-                      prefix="Email" 
-                      field="email"
-                      errors={state.errors}
-                      className="text-red-500 text-xs sm:text-sm mt-1"
                     />
                   </div>
                 </div>
@@ -406,12 +346,6 @@ const Programs = () => {
                     placeholder="Tell us what draws you to these areas, your goals, or what do you want to see in this program..."
                     value={whyInterested}
                     onChange={(e) => setWhyInterested(e.target.value)}
-                  />
-                  <ValidationError 
-                    prefix="Message" 
-                    field="whyInterested"
-                    errors={state.errors}
-                    className="text-red-500 text-xs sm:text-sm mt-1"
                   />
                 </div>
 
@@ -497,12 +431,12 @@ const Programs = () => {
                   <motion.button
                     type="submit"
                     className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg shadow-lg flex items-center gap-3 mx-auto disabled:opacity-50 disabled:cursor-not-allowed"
-                    whileHover={{ scale: selectedPrograms.length > 0 && name.trim() && email.trim() && whyInterested.trim() && !state.submitting ? 1.05 : 1 }}
-                    whileTap={{ scale: selectedPrograms.length > 0 && name.trim() && email.trim() && whyInterested.trim() && !state.submitting ? 0.95 : 1 }}
-                    disabled={selectedPrograms.length === 0 || !name.trim() || !email.trim() || !whyInterested.trim() || state.submitting}
+                    whileHover={{ scale: selectedPrograms.length > 0 && name.trim() && email.trim() && whyInterested.trim() && !submitting ? 1.05 : 1 }}
+                    whileTap={{ scale: selectedPrograms.length > 0 && name.trim() && email.trim() && whyInterested.trim() && !submitting ? 0.95 : 1 }}
+                    disabled={selectedPrograms.length === 0 || !name.trim() || !email.trim() || !whyInterested.trim() || submitting}
                   >
                     <Send className="w-5 h-5" />
-                    {state.submitting ? 'Submitting...' : 'Submit Interest'}
+                    {submitting ? 'Submitting...' : 'Submit Interest'}
                   </motion.button>
                   {(selectedPrograms.length === 0 || !name.trim() || !email.trim()) && (
                     <p className="text-gray-500 text-xs sm:text-sm mt-2">

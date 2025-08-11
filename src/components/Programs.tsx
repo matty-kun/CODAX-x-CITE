@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Globe, Shield, Brain, Gamepad2, Smartphone, Palette, Cloud, BarChart3, Coins, Cpu, Send, Rocket } from 'lucide-react';
-import { supabase } from '../supabaseClient';
+import { supabase } from '../utils/supabase';
 
 const Programs = () => {
   const [selectedPrograms, setSelectedPrograms] = useState<string[]>([]);
@@ -90,7 +90,7 @@ const Programs = () => {
     },
     {
       icon: Rocket,
-      title: "Technopreneurship",
+      title: "Technopreneurship (Startup)",
       description: "Build and launch your own startup with guidance on business strategy, funding, and growth.",
       color: "from-indigo-500 to-purple-500",
       skills: ["Business Strategy", "Funding", "Growth Hacking", "MVP Development"]
@@ -119,9 +119,10 @@ const Programs = () => {
     e.preventDefault();
     setSubmitting(true);
     setSucceeded(false);
-    // Insert interest data into Supabase
-    const { error } = await supabase
-      .from('program_interests')
+
+    // Insert all form data into interests table
+    const { error: interestError } = await supabase
+      .from('interests')
       .insert([
         {
           name,
@@ -136,8 +137,8 @@ const Programs = () => {
       ]);
 
     setSubmitting(false);
-    if (error) {
-      console.error('Error submitting interest:', error);
+    if (interestError) {
+      console.error('Error submitting interest:', interestError);
       return;
     }
 
@@ -242,15 +243,15 @@ const Programs = () => {
                 className="text-center py-10 sm:py-16"
               >
                 <div className="bg-gradient-to-br from-green-200 to-green-100 text-green-900 p-6 sm:p-8 rounded-3xl inline-block shadow-xl border-2 border-green-400">
-                  <div className="flex items-center gap-3 text-xl sm:text-2xl font-bold">
+                  <div className="flex flex-col items-center justify-center gap-3 text-xl sm:text-2xl font-bold">
                     <div className="w-8 h-8 sm:w-10 sm:h-10 bg-green-500 rounded-full flex items-center justify-center">
                       <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
                     </div>
-                    Thank you for your interest!
+                    <span className="text-center w-full">Thank you for your interest!</span>
                   </div>
-                  <p className="mt-2 sm:mt-4 text-green-800 text-base sm:text-lg">Your feedback helps us build the right program for you.</p>
+                  <p className="mt-2 sm:mt-4 text-green-800 text-base sm:text-lg text-center">Your feedback helps us build the right program for you.<br />You might want to scroll down to see more and connect with us.</p>
                 </div>
               </motion.div>
             ) : (

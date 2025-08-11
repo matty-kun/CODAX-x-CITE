@@ -7,6 +7,7 @@ import Footer from './components/Footer';
 function App() {
   console.log('App component rendering');
   
+  
   return (
     <div className="min-h-screen bg-gray-100">
       <Hero />
@@ -16,5 +17,7 @@ function App() {
     </div>
   );
 }
+
+
 
 export default App;

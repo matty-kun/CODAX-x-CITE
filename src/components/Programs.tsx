@@ -99,18 +99,15 @@ const Programs = () => {
 
   const handleProgramToggle = (programTitle: string) => {
     const isCurrentlySelected = selectedPrograms.includes(programTitle);
-    const willBeSelected = !isCurrentlySelected;
-    
-    setSelectedPrograms(prev => 
-      isCurrentlySelected
-        ? prev.filter(p => p !== programTitle)
-        : [...prev, programTitle]
-    );
-    
-    // Show/hide startup questions based on Technopreneurship selection
-    if (programTitle === "Technopreneurship") {
-      setShowStartupQuestions(willBeSelected);
+    let newSelectedPrograms;
+    if (isCurrentlySelected) {
+      newSelectedPrograms = selectedPrograms.filter(p => p !== programTitle);
+    } else {
+      newSelectedPrograms = [...selectedPrograms, programTitle];
     }
+    setSelectedPrograms(newSelectedPrograms);
+    // Show/hide startup questions if Technopreneurship is selected
+    setShowStartupQuestions(newSelectedPrograms.includes("Technopreneurship (Startup)"));
   };
 
   // Remove EmailJS logic

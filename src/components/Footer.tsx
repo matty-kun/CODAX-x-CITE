@@ -14,7 +14,7 @@ const Footer = () => {
     {
       icon: SiGithub,
       name: "GitHub",
-      href: "https://github.com/matty-kun",
+      href: "https://github.com/matty-kun/CODAX-x-CITE",
       color: "hover:text-gray-400"
     },
     {

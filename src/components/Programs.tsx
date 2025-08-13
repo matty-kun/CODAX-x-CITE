@@ -426,26 +426,47 @@ const Programs = () => {
 
                 {/* Submit Button */}
                 <div className="text-center">
-                  <motion.button
-                    type="submit"
-                    className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg shadow-lg flex items-center gap-3 mx-auto disabled:opacity-50 disabled:cursor-not-allowed"
-                    whileHover={{ scale: selectedPrograms.length > 0 && name.trim() && email.trim() && whyInterested.trim() && !submitting ? 1.05 : 1 }}
-                    whileTap={{ scale: selectedPrograms.length > 0 && name.trim() && email.trim() && whyInterested.trim() && !submitting ? 0.95 : 1 }}
-                    disabled={selectedPrograms.length === 0 || !name.trim() || !email.trim() || !whyInterested.trim() || submitting}
-                  >
-                    <Send className="w-5 h-5" />
-                    {submitting ? 'Submitting...' : 'Submit Interest'}
-                  </motion.button>
-                  {(selectedPrograms.length === 0 || !name.trim() || !email.trim()) && (
-                    <p className="text-gray-500 text-xs sm:text-sm mt-2">
-                      {selectedPrograms.length === 0 
-                        ? 'Please select at least one program to continue'
-                        : !name.trim() || !email.trim() || !whyInterested.trim()
-                        ? 'Please fill in all required fields'
-                        : 'Please select at least one program to continue'
-                      }
-                    </p>
-                  )}
+                  {(() => {
+                    const isStartupRequired = showStartupQuestions;
+                    const isSubmitDisabled =
+                      selectedPrograms.length === 0 ||
+                      !name.trim() ||
+                      !email.trim() ||
+                      !whyInterested.trim() ||
+                      submitting ||
+                      (isStartupRequired &&
+                        (!startupField.trim() ||
+                        !startupProblem.trim() ||
+                        !startupIdeas.trim() ||
+                        !startupBarriers.trim()));
+
+                    return (
+                      <>
+                        <motion.button
+                          type="submit"
+                          className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg shadow-lg flex items-center gap-3 mx-auto disabled:opacity-50 disabled:cursor-not-allowed"
+                          whileHover={{ scale: !isSubmitDisabled ? 1.05 : 1 }}
+                          whileTap={{ scale: !isSubmitDisabled ? 0.95 : 1 }}
+                          disabled={isSubmitDisabled}
+                        >
+                          <Send className="w-5 h-5" />
+                          {submitting ? 'Submitting...' : 'Submit Interest'}
+                        </motion.button>
+
+                        {isSubmitDisabled && (
+                          <p className="text-gray-500 text-xs sm:text-sm mt-2">
+                            {selectedPrograms.length === 0
+                              ? 'Please select at least one program to continue'
+                              : !name.trim() || !email.trim() || !whyInterested.trim()
+                              ? 'Please fill in all required fields'
+                              : isStartupRequired
+                              ? 'Please complete all startup questions before submitting'
+                              : ''}
+                          </p>
+                        )}
+                      </>
+                    );
+                  })()}
                 </div>
               </form>
             )}
